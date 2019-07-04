@@ -1,0 +1,162 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "api/api.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/topic": {
+      "post": {
+        "summary": "Topic returns content for provided topic name.",
+        "operationId": "Topic",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "$ref": "#/x-stream-definitions/apiTopicContent"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiTopicName"
+            }
+          }
+        ],
+        "tags": [
+          "Publisher"
+        ]
+      }
+    },
+    "/topics": {
+      "post": {
+        "summary": "Topics returns all registered topics.",
+        "operationId": "Topics",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiTopicNames"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiNope"
+            }
+          }
+        ],
+        "tags": [
+          "Publisher"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "apiNope": {
+      "type": "object"
+    },
+    "apiTopicContent": {
+      "type": "object",
+      "properties": {
+        "KV": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "TopicContent contains list of Key=Value pairs of Metadata field from received messages."
+    },
+    "apiTopicName": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      },
+      "title": "TopicName contains Watermill topic name"
+    },
+    "apiTopicNames": {
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "TopicName contains Watermill topic names."
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "runtimeStreamError": {
+      "type": "object",
+      "properties": {
+        "grpc_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "http_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "http_status": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  },
+  "x-stream-definitions": {
+    "apiTopicContent": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "$ref": "#/definitions/apiTopicContent"
+        },
+        "error": {
+          "$ref": "#/definitions/runtimeStreamError"
+        }
+      },
+      "title": "Stream result of apiTopicContent"
+    }
+  }
+}

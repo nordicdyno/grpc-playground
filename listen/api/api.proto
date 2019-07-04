@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package api;
+
+import "google/api/annotations.proto";
+
+service Publisher {
+	// Topics returns all registered topics.
+	rpc Topics (Nope) returns (TopicNames) {
+		option (google.api.http) = {
+			post: "/topics"
+			body: "*"
+		};
+	}
+	// Topic returns content for provided topic name.
+	rpc Topic (TopicName) returns (stream TopicContent) {
+		option (google.api.http) = {
+			post: "/topic"
+			body: "*"
+		};
+	}
+}
+
+message Nope {}
+
+// TopicName contains Watermill topic name
+message TopicName {
+	string name = 1;
+}
+
+// TopicName contains Watermill topic names.
+message TopicNames {
+	repeated string Name = 1;
+}
+
+// TopicContent contains list of Key=Value pairs of Metadata field from received messages.
+message TopicContent {
+	repeated string KV = 1;
+}
