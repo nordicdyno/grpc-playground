@@ -1,6 +1,6 @@
 # grpc-listen
 
-proves it's possible to serve grpc on the same port with gateway package
+proves it's possible to serve grpc request on the same port with REST gateway
 
 ## how-to check
 
